@@ -1,0 +1,148 @@
+<script type="text/javascript">
+// This part is all the calculating stuffs for the final price.
+// Final price includes total price, tax, and shipping fee.
+let total_weight = 0;
+const pound = [1.5, 0.3, 0.2, 0.5, 0.1];
+let total_price = 0;
+let shipping_fee = 0;
+let sales_tax = 0.0625;
+let tax = 0;
+let final_price = 0;
+
+$.get('../itemList.json', function(res){
+  let numberOfItems = res.items.length;
+
+  for (var i = 0; i < numberOfItems; i++) {
+    let name = '#id' + [i];
+    let order_quntity = '#orderQuantity' + [i];
+    let price = '#price' + [i];
+    let weight = '#weight' +[i];
+
+    $(name).text(res.items[i].itemName);
+    $(price).text('$' + parseFloat(res.items[i].price * res.result[i].orderQuantity).toFixed(2));
+    $(order_quntity).text(Number(res.result[i].orderQuantity));
+    $(weight).text(parseFloat(res.result[i].orderQuantity * pound[i]).toFixed(2) + ' lb');
+
+    total_weight += res.result[i].orderQuantity * pound[i];
+    total_price += res.result[i].orderQuantity * res.items[i].price;
+
+  };
+
+  // Total price
+  $('#total_price').text('$' + parseFloat(total_price).toFixed(2));
+
+  // Calculating Tax
+  tax = parseFloat(total_price * sales_tax).toFixed(2);
+  $('#tax').text('$' + tax);
+
+  // Shipping fee
+  // It is calaulated by its weight in pound.
+  $('#total_weight').text(parseFloat(total_weight).toFixed(2) + ' lb');
+  if(total_weight >= 11) {
+    shipping_fee = 10;
+  }
+  else if (total_weight >= 6) {
+      shipping_fee = 7.5;
+  }
+  else {
+    shipping_fee = 5;
+  }
+  $('#shipping_fee').text('$' + shipping_fee);
+
+  // Final price.
+  final_price = parseFloat(total_price) +
+                parseFloat(shipping_fee) +
+                parseFloat(tax);
+  $('#final_price').text('$' + parseFloat(final_price).toFixed(2));
+});
+</script>
+
+<h1>Order Summary</h1>
+<form action="/edit" method="post">
+  <table>
+    <tr>
+      <th>Merchandise</th>
+      <th>Order Quantity</th>
+      <th>Edit Order Quantity <br> (add/remove)</th>
+      <th>Weight</th>
+      <th>Price</th>
+    </tr>
+
+    <tr>
+      <th><div id='id0'></div></th>
+      <th><div id='orderQuantity0' name="orderQuantity0"></div></th>
+      <th><input type="number" name="edit0"></th>
+      <th><div id='weight0'></div></th>
+      <th><div id='price0'></div></th>
+    </tr>
+
+    <tr>
+      <th><div id='id1'></div></th>
+      <th><div id='orderQuantity1' name="orderQuantity1"></div></th>
+      <th><input type="number" name="edit1"></th>
+      <th><div id='weight1'></div></th>
+      <th><div id='price1'></div></th>
+    </tr>
+
+    <tr>
+      <th><div id='id2'></div></th>
+      <th><div id='orderQuantity2' name="orderQuantity2"></div></th>
+      <th><input type="number" name="edit2"></th>
+      <th><div id='weight2'></div></th>
+      <th><div id='price2'></div></th>
+    </tr>
+
+    <tr>
+      <th><div id='id3'></div></th>
+      <th><div id='orderQuantity3' name="orderQuantity3"></div></th>
+      <th><input type="number" name="edit3"></th>
+      <th><div id='weight3'></div></th>
+      <th><div id='price3'></div></th>
+    </tr>
+
+    <tr>
+      <th><div id='id4'></div></th>
+      <th><div id='orderQuantity4' name="orderQuantity4"></div></th>
+      <th><input type="number" name="edit4"></th>
+      <th><div id='weight4'></div></th>
+      <th><div id='price4'></div></th>
+    </tr>
+
+    <tr>
+      <th></th>
+      <th>Total Price</th>
+      <th></th>
+      <th></th>
+      <th><div id='total_price'></div></th>
+    </tr>
+
+    <tr>
+      <th></th>
+      <th>Total Weight</th>
+      <th></th>
+      <th><div id='total_weight'></div></th>
+      <th><div id='shipping_fee'></div></th>
+    </tr>
+
+    <tr>
+      <th></th>
+      <th>Tax</th>
+      <th></th>
+      <th>6.25%</th>
+      <th><div id='tax'></div></th>
+    </tr>
+
+    <tr>
+      <th></th>
+      <th>Final Price</th>
+      <th></th>
+      <th></th>
+      <th><div id='final_price'></div></th>
+    </tr>
+  </table>
+  <input type="submit" value="Edit">
+</form>
+
+<form action="/purchase" method="post">
+  <input type="submit" value="Purchase">
+</form>

@@ -1,0 +1,76 @@
+<script>
+// Reading the json file.
+  $.get('../itemList.json', function(res){
+    let numberOfItems = res.items.length;
+    for (var i = 0; i < numberOfItems; i++) {
+      let name = '#id' + [i];
+      let description = '#des' + [i];
+      let price = '#price' + [i];
+      let quntity = '#quntity' + [i];
+
+      $(name).text(res.items[i].itemName);
+      $(description).text(res.items[i].description);
+      $(price).text('$' + res.items[i].price);
+      $(quntity).text(res.items[i].quantityInStock);
+    };
+  });
+
+</script>
+
+<header>
+  <h1>Good Day Market</h1>
+  <h2>Welcome!</h2>
+</header>
+
+<form action="/checkout" method="post">
+  <table>
+    <tr>
+      <th>Merchandise</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Order Quantity</th>
+      <th>Total Quantity</th>
+    </tr>
+
+    <tr>
+      <th><div id="id0"></div></th>
+      <th><div id="des0"></div></th>
+      <th><div id="price0"></div></th>
+      <th><input type="number" name="orderQuantity0" id='orderQuantity0'></th>
+      <th><div id="quntity0"></div></th>
+    </tr>
+
+    <tr>
+      <th><div id="id1"></div></th>
+      <th><div id="des1"></div></th>
+      <th><div id="price1"></div></th>
+      <th><input type="number" name="orderQuantity1"></th>
+      <th><div id="quntity1"></div></th>
+    </tr>
+
+    <tr>
+      <th><div id="id2"></div></th>
+      <th><div id="des2"></div></th>
+      <th><div id="price2"></div></th>
+      <th><input type="number" name="orderQuantity2"></th>
+      <th><div id="quntity2"></div></th>
+    </tr>
+
+    <tr>
+      <th><div id="id3"></div></th>
+      <th><div id="des3"></div></th>
+      <th><div id="price3"></div></th>
+      <th><input type="number" name="orderQuantity3"></th>
+      <th><div id="quntity3"></div></th>
+    </tr>
+
+    <tr>
+      <th><div id="id4"></div></th>
+      <th><div id="des4"></div></th>
+      <th><div id="price4"></div></th>
+      <th><input type="number" name="orderQuantity4"></th>
+      <th><div id="quntity4"></div></th>
+    </tr>
+  </table>
+  <input type="submit" value="Checkout">
+</form>
